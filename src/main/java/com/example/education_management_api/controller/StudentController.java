@@ -82,4 +82,6 @@ public class StudentController {
             }
         }
     }
+
+    //Lương của giáo viên là
 }
