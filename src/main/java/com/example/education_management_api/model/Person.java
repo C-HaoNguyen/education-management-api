@@ -81,4 +81,6 @@ public abstract class Person {
     String getTimeGoToSchool() {
         return "Person not go to school";
     }
+
+    public abstract void updateNewAddress(String address);
 }
