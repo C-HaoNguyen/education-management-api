@@ -27,7 +27,7 @@ public class TeacherController {
         return teachers;
     }
 
-    @PostMapping("create-teacher")
+    @PostMapping("/create-teacher")
     public Teacher createTeacher(@RequestBody Teacher teacher) {
         getAllTeachers().add(teacher);
         return teacher;
@@ -44,4 +44,19 @@ public class TeacherController {
         }
         return result;
     }
+
+
+    @PutMapping
+    public void updateSalary(@RequestParam int id, @RequestParam int newSalary) {
+        List<Teacher> teachers = getFakeTeacherList();
+        for (int i = 0; i < teachers.size(); i++) {
+            if (teachers.get(i).getId() == id) {
+                teachers.get(i).setSalary(newSalary);
+                System.out.println("Updated salary for teacher with ID " + id + " to " + newSalary);
+                return;
+            }
+        }
+    }
+
+
 }
