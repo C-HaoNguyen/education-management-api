@@ -27,14 +27,16 @@ public class TeacherController {
         return teachers;
     }
 
-    @PostMapping("create-teacher")
+    @PostMapping("/create-teacher")
     public Teacher createTeacher(@RequestBody Teacher teacher) {
-        getAllTeachers().add(teacher);
+        List<Teacher> teachers = getAllTeachers();
+        teachers.add(teacher);
+        System.out.println("Tổng số lượng teacher hiện tại: " + teachers.size());
         return teacher;
     }
 
-    @GetMapping("/teachers-have-first-name")
-    public List<Teacher> getTeacherDetail(@RequestParam String firstName) {
+    @GetMapping("/find-teachers-by-first-name")
+    public List<Teacher> getTeachersByFirstName(@RequestParam String firstName) {
         List<Teacher> teachers = getFakeTeacherList();
         List<Teacher> result = new ArrayList<>();
         for (int i = 0; i < teachers.size(); i++) {
