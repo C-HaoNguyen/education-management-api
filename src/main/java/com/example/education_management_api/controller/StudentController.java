@@ -1,6 +1,8 @@
 package com.example.education_management_api.controller;
 
 import com.example.education_management_api.model.Student;
+import com.example.education_management_api.entity.Students;
+import com.example.education_management_api.respository.StudentsRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/students")
 public class StudentController {
 
+    private final StudentsRepository studentsRepository;
+
+    StudentController(StudentsRepository studentsRepository) {
+        this.studentsRepository = studentsRepository;
+    }
+
     @GetMapping("/all")
-    public List<Student> getAllStudents() {
-        List<Student> students = getFakeStudentList();
-        return students;
+    public List<Students> getAllStudents() {
+        final List<Students> all = studentsRepository.findAll();
+        System.out.println("Tat ca sinh vien co trong data base la gi:" + all.size());
+        return all;
     }
 
     private List<Student> getFakeStudentList() {
@@ -51,11 +60,10 @@ public class StudentController {
     @PostMapping("/add-name")
     @ResponseBody
     public void addStudentName(@RequestParam String name, @RequestParam Integer score) {
-        Student student = new Student();
+        Students student = new Students();
         student.setFirstName(name);
         student.setScore(score);
-        List<Student> allStudent = getFakeStudentList();
-        allStudent.add(student);
+        studentsRepository.save(student);
     }
 
     @PostMapping("/add-address")
