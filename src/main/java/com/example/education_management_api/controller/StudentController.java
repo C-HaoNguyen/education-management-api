@@ -1,26 +1,27 @@
 package com.example.education_management_api.controller;
 
 import com.example.education_management_api.model.Student;
+import com.example.education_management_api.entity.Students;
+import org.springframework.web.bind.annotation.*;
+import com.example.education_management_api.repository.StudentRepository;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/students")
 public class StudentController {
 
+    private final StudentRepository studentRepository;
+    public StudentController (StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+
     @GetMapping("/all")
-    public List<Student> getAllStudents() {
-        List<Student> students = getFakeStudentList();
-        return students;
+    public List<Students> getAllStudents() {
+        List<Students> allStudents = studentRepository.findAll();
+        return allStudents;
     }
 
     private List<Student> getFakeStudentList() {
