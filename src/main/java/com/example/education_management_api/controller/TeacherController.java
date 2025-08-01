@@ -1,19 +1,27 @@
 package com.example.education_management_api.controller;
 
+import com.example.education_management_api.entity.Teachers;
 import com.example.education_management_api.model.Teacher;
+import com.example.education_management_api.repository.TeacherRepository;
+import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/teachers")
 public class TeacherController {
+
+    private final TeacherRepository teacherRepository;
+    public TeacherController(TeacherRepository teacherRepository) {
+        this.teacherRepository = teacherRepository;
+    }
+
     @GetMapping("/all")
-    public List<Teacher> getAllTeachers() {
-        List<Teacher> teachers = getFakeTeacherList();
-        return teachers;
+    public List<Teachers> getAllTeachers() {
+        List<Teachers> allTeachers = teacherRepository.findAll();
+        return allTeachers;
     }
 
     private List<Teacher> getFakeTeacherList() {
@@ -28,8 +36,8 @@ public class TeacherController {
     }
 
     @PostMapping("/create-teacher")
-    public Teacher createTeacher(@RequestBody Teacher teacher) {
-        List<Teacher> teachers = getAllTeachers();
+    public Teachers createTeacher(@RequestBody Teachers teacher) {
+        List<Teachers> teachers = getAllTeachers();
         teachers.add(teacher);
         System.out.println("Tổng số lượng teacher hiện tại: " + teachers.size());
         return teacher;
