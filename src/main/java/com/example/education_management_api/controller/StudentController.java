@@ -1,13 +1,19 @@
 package com.example.education_management_api.controller;
 
-import com.example.education_management_api.model.Student;
 import com.example.education_management_api.entity.Students;
-import org.springframework.web.bind.annotation.*;
+import com.example.education_management_api.model.Student;
 import com.example.education_management_api.repository.StudentRepository;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/students")
@@ -39,24 +45,29 @@ public class StudentController {
 
     @GetMapping("/student-count")
     public Integer getStudentCount() {
-        List<Student> allStudent = getFakeStudentList();
-        return allStudent.size();
+        List<Students> allStudents = getAllStudents();
+        return allStudents.size();
     }
 
     @GetMapping("/student-detail")
-    public Student getStudentDetail() {
-        List<Student> allStudent = getFakeStudentList();
-        return allStudent.get(0);
+    public Students getStudentDetail(@RequestParam String name) {
+        List<Students> allStudent = getAllStudents();
+        for (int i = 0; i < allStudent.size(); i++) {
+            Students student = allStudent.get(i);
+            if (student.getStudentName().equals(name)) {
+                return student;
+            }
+        }
+        return null;
     }
 
-    @PostMapping("/add-name")
+    @PostMapping("/add")
     @ResponseBody
-    public void addStudentName(@RequestParam String name, @RequestParam Integer score) {
-        Student student = new Student();
-        student.setFirstName(name);
-        student.setScore(score);
-        List<Student> allStudent = getFakeStudentList();
-        allStudent.add(student);
+    public void addStudent(@RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthDate,
+                           @RequestParam String phone) {
+        Students student = new Students(studentName, email, birthDate, phone);
+        Students savedStudent = studentRepository.save(student);
+        System.out.println(savedStudent.getStudentId());
     }
 
     @PostMapping("/add-address")
@@ -83,6 +94,4 @@ public class StudentController {
             }
         }
     }
-
-    //Lương của giáo viên là
 }
