@@ -3,17 +3,11 @@ package com.example.education_management_api.controller;
 import com.example.education_management_api.entity.Students;
 import com.example.education_management_api.model.Student;
 import com.example.education_management_api.repository.StudentRepository;
+import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/students")
@@ -93,5 +87,10 @@ public class StudentController {
                 System.out.println("Da update thanh cong score cho sinh vien: " + student.getFirstName());
             }
         }
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteStudent(@RequestParam Integer id) {
+        studentRepository.deleteById(id);
     }
 }
