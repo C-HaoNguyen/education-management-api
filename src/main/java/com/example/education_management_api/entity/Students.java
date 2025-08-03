@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDate;
-import org.springframework.cglib.core.Local;
 
 @Entity
 //@Table(name = "STUDENT")

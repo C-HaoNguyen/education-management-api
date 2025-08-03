@@ -35,12 +35,11 @@ public class TeacherController {
         return teachers;
     }
 
-    @PostMapping("/create-teacher")
-    public Teachers createTeacher(@RequestBody Teachers teacher) {
-        List<Teachers> teachers = getAllTeachers();
-        teachers.add(teacher);
-        System.out.println("Tổng số lượng teacher hiện tại: " + teachers.size());
-        return teacher;
+    @PostMapping("/add")
+    public void createTeacher(@RequestParam String teacherName, @RequestParam String email, @RequestParam String phoneNumber) {
+        Teachers newTeacher = new Teachers(teacherName, email, phoneNumber);
+        Teachers savedTeacher = teacherRepository.save(newTeacher);
+        System.out.println("Created new teacher: " + savedTeacher.getTeacherName());
     }
 
     @GetMapping("/find-teachers-by-first-name")
@@ -68,5 +67,8 @@ public class TeacherController {
         }
     }
 
-
+    @DeleteMapping("/delete")
+    public void deleteTeacher(@RequestParam int id) {
+        teacherRepository.deleteById(id);
+    }
 }
