@@ -55,7 +55,7 @@ public class TeacherController {
         return result;
     }
 
-    @GetMapping("/find-teachers-by-id")
+    @GetMapping("/find-teacher-by-id")
     public ResponseEntity<Teachers> getTeacherById(@RequestParam int id) {
         return teacherRepository.findById(id)
                 .map(ResponseEntity::ok)
