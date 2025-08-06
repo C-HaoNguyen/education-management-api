@@ -3,6 +3,7 @@ package com.example.education_management_api.controller;
 import com.example.education_management_api.entity.Teachers;
 import com.example.education_management_api.model.Teacher;
 import com.example.education_management_api.repository.TeacherRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -54,6 +55,12 @@ public class TeacherController {
         return result;
     }
 
+    @GetMapping("/find-teachers-by-id")
+    public ResponseEntity<Teachers> getTeacherById(@RequestParam int id) {
+        return teacherRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
     @PutMapping
     public void updateSalary(@RequestParam int id, @RequestParam int newSalary) {
