@@ -33,4 +33,10 @@ public class CourseController {
     public void deleteCourse(@RequestParam int id) {
         courseRepository.deleteById(id);
     }
+
+    @PostMapping("/add")
+    public void createCourse(@RequestParam String courseDescription) {
+        Courses courses = new Courses(courseDescription);
+        courseRepository.save(courses);
+    }
 }

@@ -10,5 +10,12 @@ public class Courses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int courseId;
-    private String courseDescription;
+    private String description;
+
+
+    public Courses() {
+    }
+    public Courses(String courseDescription) {
+        this.description = courseDescription;
+    }
 }
