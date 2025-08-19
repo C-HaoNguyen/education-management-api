@@ -12,6 +12,13 @@ public class Courses {
     private int courseId;
     private String description;
 
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     public Courses() {
     }
