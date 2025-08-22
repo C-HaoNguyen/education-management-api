@@ -39,4 +39,10 @@ public class CourseController {
         Courses courses = new Courses(courseDescription);
         courseRepository.save(courses);
     }
+
+    @PutMapping("/update")
+    public void updateCourse(@RequestParam int id, @RequestParam String courseDescription) {
+        Courses courses = new Courses(id, courseDescription);
+        courseRepository.save(courses);
+    }
 }

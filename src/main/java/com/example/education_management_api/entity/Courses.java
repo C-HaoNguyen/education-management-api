@@ -25,4 +25,9 @@ public class Courses {
     public Courses(String courseDescription) {
         this.description = courseDescription;
     }
+
+    public Courses(int id, String description) {
+        this.courseId = id;
+        this.description = description;
+    }
 }
