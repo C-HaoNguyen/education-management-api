@@ -33,8 +33,16 @@ public class TeacherController {
         return teacherRepository.findById(id).isPresent() ? teacherRepository.findById(id).get() : null;
     }
 
+    @PutMapping("/update")
+    public void updateTeacher(@RequestParam int teacherId, @RequestParam String teacherName, @RequestParam String email, @RequestParam String phoneNumber) {
+        Teachers newTeacher = new Teachers(teacherId, teacherName, email, phoneNumber);
+        Teachers savedTeacher = teacherRepository.save(newTeacher);
+        System.out.println("Created new teacher: " + savedTeacher.getTeacherName());
+    }
+
     @DeleteMapping("/delete")
     public void deleteTeacher(@RequestParam int id) {
         teacherRepository.deleteById(id);
     }
+
 }
