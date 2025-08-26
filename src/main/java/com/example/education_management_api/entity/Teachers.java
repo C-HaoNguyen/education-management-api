@@ -24,6 +24,13 @@ public class Teachers {
         this.phoneNumber = phoneNumber;
     }
 
+    public Teachers(int teacherId, String teacherName, String email, String phoneNumber) {
+        this.teacherId = teacherId;
+        this.teacherName = teacherName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getTeacherName() {
         return teacherName;
     }
