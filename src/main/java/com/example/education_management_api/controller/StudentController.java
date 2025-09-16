@@ -42,9 +42,9 @@ public class StudentController {
 
     @PostMapping("/add")
     @ResponseBody
-    public void addStudent(@RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthDate,
-                           @RequestParam String phone) {
-        Students student = new Students(studentName, email, birthDate, phone);
+    public void addStudent(@RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday,
+                           @RequestParam String phoneNumber) {
+        Students student = new Students(studentName, email, birthday, phoneNumber);
         Students savedStudent = studentRepository.save(student);
         System.out.println(savedStudent.getStudentId());
     }
@@ -53,6 +53,13 @@ public class StudentController {
     @ResponseBody
     public void addFullInfo(@RequestBody Students student) {
         studentRepository.save(student);
+    }
+
+    @PutMapping("/update")
+    public void updateStudent(@RequestParam Integer studentId, @RequestParam String studentName, @RequestParam String email,
+                              @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
+        Students updatedStudent = new Students(studentId, studentName, email, birthday, phoneNumber);
+        studentRepository.save(updatedStudent);
     }
 
     @DeleteMapping("/delete")

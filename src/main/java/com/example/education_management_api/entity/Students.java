@@ -19,7 +19,18 @@ public class Students {
     private LocalDate birthday;
     private String phoneNumber;
 
+    public Students() {
+    }
+
     public Students(String studentName, String email, LocalDate birthday, String phoneNumber) {
+        this.studentName = studentName;
+        this.email = email;
+        this.birthday = birthday;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Students(int studentId, String studentName, String email, LocalDate birthday, String phoneNumber) {
+        this.studentId = studentId;
         this.studentName = studentName;
         this.email = email;
         this.birthday = birthday;
