@@ -1,7 +1,9 @@
-CREATE TABLE classes (
+create table classes (
     class_id serial primary key,
-    teacher_id integer NOT NULL,
-    course_id integer NOT NULL,
-    CONSTRAINT fk_teacher FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id),
-    CONSTRAINT fk_course FOREIGN KEY (course_id) REFERENCES courses(course_id)
-)
+    class_name varchar(100) not null,
+    teacher_id int not null,
+    course_id int not null,
+    start_date date not null,
+    foreign key (teacher_id) references teachers(teacher_id),
+    foreign key (course_id) references courses(course_id)
+);
