@@ -17,6 +17,14 @@ public class Classes {
     private int courseId;
     private LocalDate startDate;
 
+    public Classes(final Integer classId, final String className, final Integer teacherId, final Integer courseId, final LocalDate startDate) {
+        this.classId = classId;
+        this.className = className;
+        this.teacherId = teacherId;
+        this.courseId = courseId;
+        this.startDate = startDate;
+    }
+
     public String getClassName() {
         return className;
     }
