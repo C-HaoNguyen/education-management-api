@@ -4,17 +4,12 @@ package com.example.education_management_api.controller;
 import com.example.education_management_api.dto.ClassDetailDto;
 import com.example.education_management_api.entity.Classes;
 import com.example.education_management_api.repository.ClassRepository;
+import org.springframework.web.bind.annotation.*;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/classes")
@@ -57,8 +52,13 @@ public class ClassController {
     @PostMapping("/allDetailBySearch")
     public List<ClassDetailDto> findAllClassDetailBySearch(@RequestParam String className,
                                                            @RequestParam String teacherName,
-                                                           @RequestParam String courseName) {
-        List<Object[]> results = classRepository.findClassesDetailsByFilterValues(className, teacherName, courseName);
+                                                           @RequestParam String courseName,
+                                                           @RequestParam String startDate) {
+        LocalDate startDateValue = null;
+        if (startDate != null && !startDate.isEmpty()) {
+            startDateValue = LocalDate.parse(startDate);
+        }
+        List<Object[]> results = classRepository.findClassesDetailsByFilterValues(className, teacherName, courseName, startDateValue);
 
         List<ClassDetailDto> details = new ArrayList<>();
 
