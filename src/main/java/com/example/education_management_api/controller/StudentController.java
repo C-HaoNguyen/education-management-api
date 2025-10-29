@@ -2,17 +2,25 @@ package com.example.education_management_api.controller;
 
 import com.example.education_management_api.entity.Students;
 import com.example.education_management_api.repository.StudentRepository;
-import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/students")
 public class StudentController {
 
     private final StudentRepository studentRepository;
-    public StudentController (StudentRepository studentRepository) {
+
+    public StudentController(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
@@ -42,8 +50,7 @@ public class StudentController {
 
     @PostMapping("/add")
     @ResponseBody
-    public void addStudent(@RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday,
-                           @RequestParam String phoneNumber) {
+    public void addStudent(@RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
         Students student = new Students(studentName, email, birthday, phoneNumber);
         Students savedStudent = studentRepository.save(student);
         System.out.println(savedStudent.getStudentId());
@@ -56,8 +63,7 @@ public class StudentController {
     }
 
     @PutMapping("/update")
-    public void updateStudent(@RequestParam Integer studentId, @RequestParam String studentName, @RequestParam String email,
-                              @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
+    public void updateStudent(@RequestParam Integer studentId, @RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
         Students updatedStudent = new Students(studentId, studentName, email, birthday, phoneNumber);
         studentRepository.save(updatedStudent);
     }

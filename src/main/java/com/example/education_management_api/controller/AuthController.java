@@ -1,5 +1,6 @@
 package com.example.education_management_api.controller;
 
+import com.example.education_management_api.JwtTokenUtil;
 import com.example.education_management_api.entity.Users;
 import com.example.education_management_api.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,11 @@ public class AuthController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private JwtTokenUtil jwtTokenUtil;
 
-    public AuthController (UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthController (UserRepository userRepository, PasswordEncoder passwordEncoder,
+                           JwtTokenUtil jwtTokenUtil) {
+        this.jwtTokenUtil = jwtTokenUtil;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -44,12 +48,12 @@ public class AuthController {
                     .badRequest()
                     .body("User hasn't existed.");
         } else {
-            String encodedPassword = passwordEncoder.encode(password);
             boolean isPasswordMatch = passwordEncoder.matches(password, existedUser.getPassword());
             if (isPasswordMatch) {
+                String accessToken = jwtTokenUtil.generateToken(username);
                 return ResponseEntity
                         .ok()
-                        .body("Login successfully.");
+                        .body(accessToken);
             } else {
                 return ResponseEntity
                         .badRequest()
