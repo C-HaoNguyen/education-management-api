@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -50,15 +53,32 @@ public class AuthController {
         } else {
             boolean isPasswordMatch = passwordEncoder.matches(password, existedUser.getPassword());
             if (isPasswordMatch) {
-                String accessToken = jwtTokenUtil.generateToken(username);
-                return ResponseEntity
-                        .ok()
-                        .body(accessToken);
+                String accessToken = jwtTokenUtil.generateAccessToken(username);
+                String refreshToken = jwtTokenUtil.generateRefreshToken(username);
+
+                Map<String, String> tokens = new HashMap<>();
+                tokens.put("accessToken", accessToken);
+                tokens.put("refreshToken", refreshToken);
+                return ResponseEntity.ok(tokens);
             } else {
                 return ResponseEntity
                         .badRequest()
                         .body("Username or password is incorrect.");
             }
+        }
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestParam String refreshToken) {
+        if (jwtTokenUtil.validateToken(refreshToken)) {
+            String username = jwtTokenUtil.extractUsername(refreshToken);
+            String newAccessToken = jwtTokenUtil.generateAccessToken(username);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("accessToken", newAccessToken);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(401).body("Invalid or expired refresh token");
         }
     }
 }
