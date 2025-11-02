@@ -12,7 +12,7 @@ import java.util.Date;
 @Component
 public class JwtTokenUtil {
     private static final String SECRET_KEY = "this_is_a_very_secret_key_for_jwt_123456";
-    private static final long ACCESS_EXPIRATION = 1000 * 60 * 60; // 1 hour
+    private static final long ACCESS_EXPIRATION = 1000 * 5 * 60; // 1 hour đơn vị: milliseconds
     private static final long REFRESH_EXPIRATION = 1000L * 60 * 60 * 24 * 7; // 7 days
 
     private Key getSigningKey() {

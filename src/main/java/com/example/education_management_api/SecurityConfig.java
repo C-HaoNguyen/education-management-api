@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 // Cho phép request cụ thể mà không cần xác thực
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/signup", "/auth/login").permitAll()  // Cho phép 2 endpoint này public
+                        .requestMatchers("/auth/signup", "/auth/login", "auth/refresh").permitAll()  // Cho phép 3 endpoint này public
                         .anyRequest().authenticated()  // Các request khác cần login
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
