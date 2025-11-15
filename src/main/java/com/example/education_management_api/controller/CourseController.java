@@ -2,10 +2,16 @@ package com.example.education_management_api.controller;
 
 import com.example.education_management_api.entity.Courses;
 import com.example.education_management_api.repository.CourseRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/courses")
@@ -31,8 +37,13 @@ public class CourseController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteCourse(@RequestParam int id) {
-        courseRepository.deleteById(id);
+    public ResponseEntity deleteCourse(@RequestParam int id) {
+        try {
+            courseRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/add")

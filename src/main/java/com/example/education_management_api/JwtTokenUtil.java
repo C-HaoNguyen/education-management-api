@@ -4,15 +4,14 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
-
 import java.security.Key;
 import java.util.Date;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenUtil {
     private static final String SECRET_KEY = "this_is_a_very_secret_key_for_jwt_123456";
-    private static final long ACCESS_EXPIRATION = 1000 * 5 * 60; // 1 hour đơn vị: milliseconds
+    private static final long ACCESS_EXPIRATION = 2000 * 60 * 60; // 2 hour
     private static final long REFRESH_EXPIRATION = 1000L * 60 * 60 * 24 * 7; // 7 days
 
     private Key getSigningKey() {
