@@ -3,12 +3,15 @@ package com.example.education_management_api.controller;
 import com.example.education_management_api.JwtTokenUtil;
 import com.example.education_management_api.entity.Users;
 import com.example.education_management_api.repository.UserRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
@@ -53,7 +56,7 @@ public class AuthController {
         } else {
             boolean isPasswordMatch = passwordEncoder.matches(password, existedUser.getPassword());
             if (isPasswordMatch) {
-                String accessToken = jwtTokenUtil.generateAccessToken(username);
+                String accessToken = jwtTokenUtil.generateAccessToken(username, existedUser.getRole());
                 String refreshToken = jwtTokenUtil.generateRefreshToken(username);
 
                 Map<String, String> tokens = new HashMap<>();
@@ -72,7 +75,7 @@ public class AuthController {
     public ResponseEntity<?> refreshToken(@RequestParam String refreshToken) {
         if (jwtTokenUtil.validateToken(refreshToken)) {
             String username = jwtTokenUtil.extractUsername(refreshToken);
-            String newAccessToken = jwtTokenUtil.generateAccessToken(username);
+            String newAccessToken = jwtTokenUtil.generateAccessToken(username, "admin");
 
             Map<String, String> response = new HashMap<>();
             response.put("accessToken", newAccessToken);
