@@ -11,6 +11,8 @@ public class Courses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int courseId;
     private String description;
+    public int duration;
+    public String details;
 
     public int getCourseId() {
         return courseId;
@@ -18,6 +20,22 @@ public class Courses {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public Courses() {
