@@ -41,14 +41,14 @@ public class CourseController {
     }
 
     @PostMapping("/add")
-    public void createCourse(@RequestParam String courseDescription) {
-        Courses courses = new Courses(courseDescription);
+    public void createCourse(@RequestParam String courseDescription, @RequestParam int duration, @RequestParam String details) {
+        Courses courses = new Courses(courseDescription, duration, details);
         courseRepository.save(courses);
     }
 
     @PutMapping("/update")
-    public void updateCourse(@RequestParam int id, @RequestParam String courseDescription) {
-        Courses courses = new Courses(id, courseDescription);
+    public void updateCourse(@RequestParam int id, @RequestParam String courseDescription, @RequestParam int duration, @RequestParam String details) {
+        Courses courses = new Courses(id, courseDescription, duration, details);
         courseRepository.save(courses);
     }
 }

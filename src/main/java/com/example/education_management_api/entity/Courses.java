@@ -40,12 +40,17 @@ public class Courses {
 
     public Courses() {
     }
-    public Courses(String courseDescription) {
+
+    public Courses(String courseDescription, int duration, String details) {
         this.description = courseDescription;
+        this.duration = duration;
+        this.details = details;
     }
 
-    public Courses(int id, String description) {
+    public Courses(int id, String description, int duration, String details) {
         this.courseId = id;
         this.description = description;
+        this.duration = duration;
+        this.details = details;
     }
 }
