@@ -3,7 +3,10 @@ package com.example.education_management_api.controller;
 
 import com.example.education_management_api.dto.ClassDetailDto;
 import com.example.education_management_api.entity.Classes;
+import com.example.education_management_api.entity.StudentsOfClass;
+import com.example.education_management_api.entity.StudentsOfClassId;
 import com.example.education_management_api.repository.ClassRepository;
+import com.example.education_management_api.repository.StudentsOfClassRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -16,9 +19,11 @@ import java.util.List;
 public class ClassController {
 
     private final ClassRepository classRepository;
+    private final StudentsOfClassRepository studentsOfClassRepository;
 
-    public ClassController(ClassRepository classRepository) {
+    public ClassController(ClassRepository classRepository, StudentsOfClassRepository studentsOfClassRepository) {
         this.classRepository = classRepository;
+        this.studentsOfClassRepository = studentsOfClassRepository;
     }
 
     @GetMapping("/all")
@@ -104,6 +109,34 @@ public class ClassController {
             return "Đã xóa class thành công!";
         } catch (Exception e) {
             return "Không thể xóa class được!";
+        }
+    }
+
+    @PostMapping("/add-student-to-class")
+    public String addStudentToClass(@RequestParam Integer classId, @RequestParam Integer studentId) {
+        StudentsOfClassId id = new StudentsOfClassId(classId, studentId);
+        StudentsOfClass student = new StudentsOfClass(id);
+        try {
+            boolean isExistedStudents = studentsOfClassRepository.findById(id).isPresent();
+            if (isExistedStudents) {
+                return "Học viên đã tồn tại trong lớp!";
+            }
+            studentsOfClassRepository.save(student);
+            return "Đã thêm học viên thành công!";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "Không thể thêm học viên!";
+        }
+    }
+
+    @DeleteMapping("/remove-student-from-class")
+    public String deleteStudentFromClass(@RequestParam Integer classId, @RequestParam Integer studentId) {
+        try {
+            StudentsOfClassId id = new StudentsOfClassId(classId, studentId);
+            studentsOfClassRepository.deleteById(id);
+            return "Đã xóa học viên thành công!";
+        } catch (Exception e) {
+            return "Không thể xóa học viên!";
         }
     }
 }
