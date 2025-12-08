@@ -2,6 +2,7 @@ package com.example.education_management_api.controller;
 
 
 import com.example.education_management_api.dto.ClassDetailDto;
+import com.example.education_management_api.dto.StudentOfClassDto;
 import com.example.education_management_api.entity.Classes;
 import com.example.education_management_api.entity.StudentsOfClass;
 import com.example.education_management_api.entity.StudentsOfClassId;
@@ -138,5 +139,26 @@ public class ClassController {
         } catch (Exception e) {
             return "Không thể xóa học viên!";
         }
+    }
+
+    @PostMapping("/get-list-students-of-class")
+    public List<StudentOfClassDto> getListStudentsOfClass(@RequestParam Integer classId) {
+        List<Object[]> results = classRepository.listStudentsOfClass(classId);
+
+        List<StudentOfClassDto> students = new ArrayList<>();
+
+        for (Object[] row : results) {
+            System.out.println(row[0]);
+            //1 -> Object[] [-1, "Java Core", 2, "Dao", "F6", 2025-12-12]
+            StudentOfClassDto studentInfo = new StudentOfClassDto(
+                    (Integer) row[0],    // student_id
+                    (String) row[1],     // student_name
+                    (String) row[2],    // email
+                    ((Date) row[3]).toLocalDate(),     // birthday
+                    (String) row[4]    // phone_number
+            );
+            students.add(studentInfo);
+        }
+        return students;
     }
 }

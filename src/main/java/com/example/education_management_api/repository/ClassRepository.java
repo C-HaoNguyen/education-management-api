@@ -36,4 +36,13 @@ public interface ClassRepository extends JpaRepository<Classes, Integer> {
                                                     @Param("teacherName") String teacherName,
                                                     @Param("courseDescription") String courseDescription,
                                                     @Param("startDate") LocalDate startDate);
+
+    @Query(
+            value = "SELECT students.*\n" +
+                    "FROM studentsofclass\n" +
+                    "JOIN students ON studentsofclass.student_id = students.student_id\n" +
+                    "WHERE studentsofclass.class_id = :classIdInput;",
+            nativeQuery = true
+    )
+    List<Object[]> listStudentsOfClass(@Param("classIdInput") Integer classId);
 }
