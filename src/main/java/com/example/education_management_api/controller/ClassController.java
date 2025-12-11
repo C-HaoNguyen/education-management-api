@@ -33,6 +33,11 @@ public class ClassController {
         return classRepository.findAll();
     }
 
+    @PostMapping("/class-detail")
+    public Classes getClassDetail(@RequestParam Integer classId) {
+        return classRepository.findById(classId).orElse(null);
+    }
+
     @GetMapping("/allDetail")
     public List<ClassDetailDto> findAllClassDetail() {
         List<Object[]> results = classRepository.findAllClassesDetail();
