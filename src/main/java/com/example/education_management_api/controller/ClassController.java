@@ -8,6 +8,7 @@ import com.example.education_management_api.entity.StudentsOfClass;
 import com.example.education_management_api.entity.StudentsOfClassId;
 import com.example.education_management_api.repository.ClassRepository;
 import com.example.education_management_api.repository.StudentsOfClassRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -119,30 +120,30 @@ public class ClassController {
     }
 
     @PostMapping("/add-student-to-class")
-    public String addStudentToClass(@RequestParam Integer classId, @RequestParam Integer studentId) {
+    public ResponseEntity<String> addStudentToClass(@RequestParam Integer classId, @RequestParam Integer studentId) {
         StudentsOfClassId id = new StudentsOfClassId(classId, studentId);
         StudentsOfClass student = new StudentsOfClass(id);
         try {
             boolean isExistedStudents = studentsOfClassRepository.findById(id).isPresent();
             if (isExistedStudents) {
-                return "Học viên đã tồn tại trong lớp!";
+                return ResponseEntity.ok().build();
             }
             studentsOfClassRepository.save(student);
-            return "Đã thêm học viên thành công!";
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return "Không thể thêm học viên!";
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @DeleteMapping("/remove-student-from-class")
-    public String deleteStudentFromClass(@RequestParam Integer classId, @RequestParam Integer studentId) {
+    public ResponseEntity<String> deleteStudentFromClass(@RequestParam Integer classId, @RequestParam Integer studentId) {
         try {
             StudentsOfClassId id = new StudentsOfClassId(classId, studentId);
             studentsOfClassRepository.deleteById(id);
-            return "Đã xóa học viên thành công!";
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return "Không thể xóa học viên!";
+            return ResponseEntity.badRequest().build();
         }
     }
 
