@@ -11,10 +11,11 @@ public class ClassDetailDto {
     private final int courseId;
     private final String courseName;
     private final LocalDate startDate;
+    private final Long amountOfStudents;
 
     public ClassDetailDto(final int classId, final String className, final int teacherId,
                           final String teacherName, final int courseId, final String courseName,
-                          final LocalDate startDate) {
+                          final LocalDate startDate, final Long amountOfStudents) {
         this.classId = classId;
         this.className = className;
         this.teacherId = teacherId;
@@ -22,6 +23,7 @@ public class ClassDetailDto {
         this.courseId = courseId;
         this.courseName = courseName;
         this.startDate = startDate;
+        this.amountOfStudents = amountOfStudents;
     }
 
     public int getClassId() {
@@ -50,5 +52,9 @@ public class ClassDetailDto {
 
     public LocalDate getStartDate() {
         return startDate;
+    }
+
+    public Long getAmountOfStudents() {
+        return amountOfStudents;
     }
 }

@@ -8,6 +8,7 @@ import com.example.education_management_api.entity.StudentsOfClass;
 import com.example.education_management_api.entity.StudentsOfClassId;
 import com.example.education_management_api.repository.ClassRepository;
 import com.example.education_management_api.repository.StudentsOfClassRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +55,8 @@ public class ClassController {
                     (String) row[3],     // teacher_name
                     (Integer) row[4],    // course_id
                     (String) row[5],     // description (now courseName in DTO)
-                    ((Date) row[6]).toLocalDate()
+                    ((Date) row[6]).toLocalDate(),
+                    (Long) row[7]     // amount_of_students
             );
             details.add(classDetail);
         }
@@ -84,7 +86,8 @@ public class ClassController {
                     (String) row[3],     // teacher_name
                     (Integer) row[4],    // course_id
                     (String) row[5],     // description (now courseName in DTO)
-                    ((Date) row[6]).toLocalDate()
+                    ((Date) row[6]).toLocalDate(),
+                    (Long) row[7]
             );
             details.add(classDetail);
         }
@@ -126,7 +129,7 @@ public class ClassController {
         try {
             boolean isExistedStudents = studentsOfClassRepository.findById(id).isPresent();
             if (isExistedStudents) {
-                return ResponseEntity.ok().build();
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
             studentsOfClassRepository.save(student);
             return ResponseEntity.ok().build();
