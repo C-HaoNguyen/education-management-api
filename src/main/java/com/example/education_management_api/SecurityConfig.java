@@ -27,16 +27,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5173"));
-                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                    config.setAllowedOrigins(List.of(
+                            "http://localhost:5173",
+                            "https://education-management-website-gmo2.onrender.com"
+                    ));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
                     return config;
                 }))
-                .csrf(csrf -> csrf.disable())
                 // Cho phép request cụ thể mà không cần xác thực
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/signup", "/auth/login", "auth/refresh").permitAll()  // Cho phép 3 endpoint này public
+                        .requestMatchers("/auth/signup", "/auth/login", "/auth/refresh").permitAll()  // Cho phép 3 endpoint này public
                         .anyRequest().authenticated()  // Các request khác cần login
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
