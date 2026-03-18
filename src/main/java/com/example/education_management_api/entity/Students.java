@@ -18,15 +18,27 @@ public class Students {
     private String email;
     private LocalDate birthday;
     private String phoneNumber;
+    private Integer isActive;
+    // int vs Integer
 
     public Students() {
     }
 
-    public Students(String studentName, String email, LocalDate birthday, String phoneNumber) {
+    public Students(final int studentId, final String studentName, final String email, final LocalDate birthday, final String phoneNumber, final Integer isActive) {
+        this.studentId = studentId;
         this.studentName = studentName;
         this.email = email;
         this.birthday = birthday;
         this.phoneNumber = phoneNumber;
+        this.isActive = isActive;
+    }
+
+    public Students(String studentName, String email, LocalDate birthday, String phoneNumber, Integer isActive) {
+        this.studentName = studentName;
+        this.email = email;
+        this.birthday = birthday;
+        this.phoneNumber = phoneNumber;
+        this.isActive = isActive;
     }
 
     public Students(int studentId, String studentName, String email, LocalDate birthday, String phoneNumber) {
@@ -55,5 +67,9 @@ public class Students {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public Integer getIsActive() {
+        return isActive;
     }
 }

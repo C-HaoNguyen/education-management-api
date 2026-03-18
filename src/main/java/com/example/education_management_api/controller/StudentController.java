@@ -2,6 +2,8 @@ package com.example.education_management_api.controller;
 
 import com.example.education_management_api.entity.Students;
 import com.example.education_management_api.repository.StudentRepository;
+import com.example.education_management_api.service.StudentService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -12,15 +14,22 @@ import java.util.List;
 public class StudentController {
 
     private final StudentRepository studentRepository;
+    private final StudentService studentService;
 
-    public StudentController(StudentRepository studentRepository) {
+    public StudentController(StudentRepository studentRepository, StudentService studentService) {
         this.studentRepository = studentRepository;
+        this.studentService = studentService;
     }
 
     @GetMapping("/all")
     public List<Students> getAllStudents() {
         List<Students> allStudents = studentRepository.findAll();
         return allStudents;
+    }
+
+    @GetMapping("/all-active")
+    public List<Students> getAllActiveStudents() {
+        return studentService.findActiveStudents();
     }
 
     @GetMapping("/student-count")
@@ -43,15 +52,8 @@ public class StudentController {
 
     @PostMapping("/add")
     @ResponseBody
-    public void addStudent(@RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
-        try {
-            Thread.sleep(10000); // 10 giây = 10000 ms
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Students student = new Students(studentName, email, birthday, phoneNumber);
-        Students savedStudent = studentRepository.save(student);
-        System.out.println(savedStudent.getStudentId());
+    public ResponseEntity addStudent(@RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
+        return studentService.addStudent(studentName, email, birthday, phoneNumber);
     }
 
     @PostMapping("/add-full-info")
