@@ -22,6 +22,10 @@ public class Courses {
         return description;
     }
 
+    public void setCourseDescription(String description) {
+        this.description = description;
+    }
+
     public int getDuration() {
         return duration;
     }

@@ -3,15 +3,12 @@ package com.example.education_management_api.controller;
 import com.example.education_management_api.JwtTokenUtil;
 import com.example.education_management_api.entity.Users;
 import com.example.education_management_api.repository.UserRepository;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -47,7 +44,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity login(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
         Users existedUser = userRepository.findByUsername(username);
         if (existedUser == null) {
             return ResponseEntity

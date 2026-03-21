@@ -1,7 +1,6 @@
 package com.example.education_management_api.controller;
 
 import com.example.education_management_api.entity.Students;
-import com.example.education_management_api.repository.StudentRepository;
 import com.example.education_management_api.service.StudentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,19 +11,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 public class StudentController {
-
-    private final StudentRepository studentRepository;
     private final StudentService studentService;
 
-    public StudentController(StudentRepository studentRepository, StudentService studentService) {
-        this.studentRepository = studentRepository;
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
     @GetMapping("/all")
     public List<Students> getAllStudents() {
-        List<Students> allStudents = studentRepository.findAll();
-        return allStudents;
+        return studentService.findAllStudents();
     }
 
     @GetMapping("/all-active")
@@ -52,24 +47,28 @@ public class StudentController {
 
     @PostMapping("/add")
     @ResponseBody
-    public ResponseEntity addStudent(@RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
-        return studentService.addStudent(studentName, email, birthday, phoneNumber);
-    }
-
-    @PostMapping("/add-full-info")
-    @ResponseBody
-    public void addFullInfo(@RequestBody Students student) {
-        studentRepository.save(student);
+    public ResponseEntity<?> addStudent(@RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
+        String errorMessage = studentService.validateNewStudent(studentName, email, birthday, phoneNumber);
+        if (errorMessage != null) {
+            return ResponseEntity.badRequest().body(errorMessage);
+        } else {
+            studentService.addStudent(studentName, email, birthday, phoneNumber);
+            return ResponseEntity.ok("Add student successfully");
+        }
     }
 
     @PutMapping("/update")
     public void updateStudent(@RequestParam Integer studentId, @RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
-        Students updatedStudent = new Students(studentId, studentName, email, birthday, phoneNumber);
-        studentRepository.save(updatedStudent);
+        studentService.updateStudent(studentId, studentName, email, birthday, phoneNumber);
+    }
+
+    @PutMapping("/update-status")
+    public void updateStudentStatus(@RequestParam Integer studentId) {
+        studentService.updateStudentStatus(studentId);
     }
 
     @DeleteMapping("/delete")
     public void deleteStudent(@RequestParam Integer id) {
-        studentRepository.deleteById(id);
+        studentService.deleteStudent(id);
     }
 }
