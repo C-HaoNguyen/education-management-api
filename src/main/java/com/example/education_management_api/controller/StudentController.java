@@ -58,8 +58,14 @@ public class StudentController {
     }
 
     @PutMapping("/update")
-    public void updateStudent(@RequestParam Integer studentId, @RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
-        studentService.updateStudent(studentId, studentName, email, birthday, phoneNumber);
+    public ResponseEntity<?> updateStudent(@RequestParam Integer studentId, @RequestParam String studentName, @RequestParam String email, @RequestParam LocalDate birthday, @RequestParam String phoneNumber) {
+        String errorMessage = studentService.validateUpdateStudent(studentId, studentName, email, birthday, phoneNumber);
+        if (errorMessage != null) {
+            return ResponseEntity.badRequest().body(errorMessage);
+        } else {
+            studentService.updateStudent(studentId, studentName, email, birthday, phoneNumber);
+            return ResponseEntity.ok("Update student successfully");
+        }
     }
 
     @PutMapping("/update-status")

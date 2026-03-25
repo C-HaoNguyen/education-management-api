@@ -54,6 +54,30 @@ public class StudentService {
         return null;
     }
 
+    public String validateUpdateStudent(Integer studentId, String updatedStudentName, String email, LocalDate birthday, String phoneNumber) {
+        //Kiểm tra student name valid
+        Students existingStudent = studentRepository.findById(studentId).orElse(null);
+        if (existingStudent != null && !existingStudent.getStudentName().equals(updatedStudentName) ) {
+            Integer countExistStudentSameName = studentRepository.countStudentsByName(updatedStudentName);
+            if (countExistStudentSameName > 0) {
+                return "Students already exist";
+            }
+        }
+
+        if (!email.contains("@")) {
+            return "Invalid email";
+        }
+
+        if (!birthday.isBefore(LocalDate.now())) {
+            return "Invalid birthday";
+        }
+
+        if (phoneNumber.length() != 10) {
+            return "Invalid phone number";
+        }
+        return null;
+    }
+
     // Hao
     public void addStudent(String studentName, String email, LocalDate birthday, String phoneNumber) {
         Students student = new Students(studentName, email, birthday, phoneNumber, 1);
