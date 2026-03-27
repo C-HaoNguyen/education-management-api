@@ -2,11 +2,18 @@ package com.example.education_management_api.controller;
 
 import com.example.education_management_api.entity.Students;
 import com.example.education_management_api.service.StudentService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/students")
@@ -52,8 +59,12 @@ public class StudentController {
         if (errorMessage != null) {
             return ResponseEntity.badRequest().body(errorMessage);
         } else {
-            studentService.addStudent(studentName, email, birthday, phoneNumber);
-            return ResponseEntity.ok("Add student successfully");
+            try {
+                studentService.addStudent(studentName, email, birthday, phoneNumber);
+                return ResponseEntity.ok("Add student successfully");
+            } catch (DataIntegrityViolationException e) {
+                return ResponseEntity.badRequest().body("Cannot add this student because of duplicate username");
+            }
         }
     }
 

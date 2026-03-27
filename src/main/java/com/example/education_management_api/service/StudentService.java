@@ -2,19 +2,27 @@ package com.example.education_management_api.service;
 
 import com.example.education_management_api.entity.Students;
 import com.example.education_management_api.repository.StudentRepository;
-import org.springframework.stereotype.Service;
-
+import com.example.education_management_api.repository.UserRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    StudentService(StudentRepository studentRepository) {
+    StudentService(StudentRepository studentRepository, PasswordEncoder passwordEncoder,
+                   UserRepository userRepository) {
         this.studentRepository = studentRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     public List<Students> findAllStudents() {
@@ -35,10 +43,10 @@ public class StudentService {
 
     public String validateNewStudent(String studentName, String email, LocalDate birthday, String phoneNumber) {
         //Kiểm tra student name valid
-        Integer countExistStudentSameName = studentRepository.countStudentsByName(studentName);
-        if (countExistStudentSameName > 0) {
-            return "Students already exist";
-        }
+//        Integer countExistStudentSameName = studentRepository.countStudentsByName(studentName);
+//        if (countExistStudentSameName > 0) {
+//            return "Students already exist";
+//        }
 
         if (!email.contains("@")) {
             return "Invalid email";
@@ -79,11 +87,17 @@ public class StudentService {
     }
 
     // Hao
-    public void addStudent(String studentName, String email, LocalDate birthday, String phoneNumber) {
+    @Transactional
+    public void addStudent(String studentName, String email, LocalDate birthday, String phoneNumber) throws DataIntegrityViolationException {
+        // create student
         Students student = new Students(studentName, email, birthday, phoneNumber, 1);
         studentRepository.save(student);
+
+        // create user login cho new student
+        String encodedPassword = passwordEncoder.encode("123456");
+        userRepository.insertUser(studentName, encodedPassword, "student");
     }
-    
+
     public void updateStudent(Integer id, String studentName, String email, LocalDate birthday, String phoneNumber) {
         Students student = studentRepository.findById(id).orElse(null);
         if (student != null) {
@@ -92,6 +106,13 @@ public class StudentService {
             student.setBirthday(birthday);
             student.setPhoneNumber(phoneNumber);
             studentRepository.save(student);
+        }
+    }
+
+    @Transactional
+    public void updateStudent(List<Students> newStudents) {
+        for (Students students : newStudents) {
+            studentRepository.save(students);
         }
     }
 
